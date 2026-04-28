@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,116 +20,215 @@
             background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
         }
 
-        .paper-texture {
-            background-color: #f4e3c5;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
-        }
-        
-        .wood-texture {
-            background-color: #2c1e16;
-            background-image: repeating-linear-gradient(to right, #2c1e16 0px, #3a271d 10px, #2c1e16 20px);
+        /* TEXTURAS REAIS DE PAPEL */
+        .paper-bg-real {
+            background-color: #e8d5b5;
+            background-image: 
+                url("https://www.transparenttextures.com/patterns/paper-fibers.png"),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%);
+            box-shadow: inset 0 0 80px rgba(139, 94, 60, 0.3);
         }
 
-        .sepia-filter {
-            filter: sepia(0.8) contrast(1.2) brightness(0.9) grayscale(0.2);
+        .scroll-classic {
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png") 30 round;
+        }
+
+        /* Efeito de Curvatura e Sombra do Pergaminho */
+        .scroll-volume {
+            position: relative;
+        }
+        .scroll-volume::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.15) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Bordas rasgadas via Clip-Path mais agressivo */
+        .torn-edge {
+            clip-path: polygon(
+                2% 2%, 15% 0%, 28% 3%, 42% 1%, 55% 4%, 70% 1%, 85% 3%, 98% 1%, 
+                100% 15%, 97% 28%, 100% 42%, 98% 55%, 100% 70%, 97% 85%, 100% 98%,
+                85% 100%, 70% 97%, 55% 100%, 42% 98%, 28% 100%, 15% 97%, 0% 100%,
+                2% 85%, 0% 70%, 3% 55%, 1% 42%, 3% 28%, 0% 15%
+            );
+        }
+
+        /* Filtro de Foto Medieval Realista */
+        .medieval-photo {
+            filter: sepia(1) contrast(1.1) brightness(0.9) saturate(0.4) blur(0.3px);
             mix-blend-mode: multiply;
         }
 
-        .scroll-classic { @apply paper-texture text-amber-950 border-8 border-double border-amber-900/40 shadow-2xl; }
-        .scroll-noble { @apply bg-slate-50 text-slate-900 border-[12px] border-solid border-yellow-600 shadow-xl; background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png"); }
-        .scroll-dark { @apply bg-stone-900 text-stone-300 border-4 border-dashed border-red-900 shadow-2xl; background-image: url("https://www.transparenttextures.com/patterns/black-paper.png"); }
+        .wood-spindle {
+            background: linear-gradient(to bottom, #2b1b17 0%, #5d4037 40%, #5d4037 60%, #2b1b17 100%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+        }
+
+        /* Marcas de dobra no cartaz */
+        .folded-paper::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 49.5%, rgba(0,0,0,0.05) 50%, transparent 50.5%),
+                linear-gradient(0deg, transparent 49.5%, rgba(0,0,0,0.05) 50%, transparent 50.5%);
+            pointer-events: none;
+        }
+
+        .stamp-urgent {
+            border: 4px double #991b1b;
+            color: #991b1b;
+            transform: rotate(-15deg);
+            font-family: 'Pirata One', cursive;
+            padding: 5px 15px;
+            opacity: 0.6;
+            text-transform: uppercase;
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="min-h-screen p-4 lg:p-8">
 
-    <!-- Cabeçalho -->
     <header class="text-center mb-8 border-b-2 border-amber-800/50 pb-6">
-        <h1 class="text-4xl md:text-6xl text-amber-500 font-bold mb-2 font-pirata">A Estalagem dos Mercadores</h1>
+        <h1 class="text-4xl md:text-6xl text-amber-500 font-bold mb-2 font-pirata tracking-wider">A Estalagem dos Mercadores</h1>
         <p class="text-lg text-stone-400 font-handwriting italic max-w-2xl mx-auto">
-            "As notícias voam nas asas dos corvos e nas carroças dos mercadores."
+            "Papéis que contam histórias, cartazes que ditam destinos."
         </p>
     </header>
 
-    <!-- Tabs -->
+    <!-- Navegação -->
     <div class="flex justify-center gap-4 mb-8">
-        <button onclick="switchTab('pergaminho')" id="btn-pergaminho" class="px-6 py-3 text-lg font-bold transition-all bg-amber-800 text-amber-100 border-2 border-amber-500 shadow-lg">📜 Contos</button>
-        <button onclick="switchTab('procurado')" id="btn-procurado" class="px-6 py-3 text-lg font-bold transition-all bg-stone-800 text-stone-400 border-2 border-stone-700">⚔️ Procurados</button>
+        <button onclick="switchTab('pergaminho')" id="btn-pergaminho" class="px-8 py-3 text-lg font-bold transition-all bg-amber-800 text-amber-100 border-b-4 border-amber-950 shadow-lg">📜 Pergaminhos</button>
+        <button onclick="switchTab('procurado')" id="btn-procurado" class="px-8 py-3 text-lg font-bold transition-all bg-stone-800 text-stone-400 border-b-4 border-stone-900">⚔️ Cartazes</button>
     </div>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         
-        <!-- Formulário -->
-        <div class="lg:col-span-5 bg-stone-900 p-6 rounded-lg border border-stone-700 shadow-xl h-fit">
+        <!-- PAINEL DE CONTROLE -->
+        <div class="lg:col-span-4 bg-stone-900/90 backdrop-blur p-6 rounded-xl border border-stone-700 shadow-2xl h-fit sticky top-4 z-50">
+            
             <div id="form-pergaminho">
-                <h2 class="text-2xl text-amber-500 mb-6 font-pirata border-b border-stone-700 pb-2">Mesa do Escriba</h2>
-                <div class="space-y-4 font-sans text-sm">
-                    <label class="block text-stone-400">Estilo</label>
-                    <select onchange="updateScrollStyle(this.value)" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
-                        <option value="classic">Papiro Comum</option>
-                        <option value="noble">Decreto Real</option>
-                        <option value="dark">Pergaminho Sombrio</option>
+                <h3 class="text-amber-500 font-pirata text-2xl mb-4 border-b border-stone-800 pb-2">Configurar Pergaminho</h3>
+                <div class="space-y-4 text-sm">
+                    <select onchange="updateScrollStyle(this.value)" class="w-full bg-stone-800 border border-stone-600 p-2 rounded text-stone-200 outline-none">
+                        <option value="classic">Papiro dos Mercadores</option>
+                        <option value="noble">Pergaminho Real</option>
+                        <option value="dark">Papiro das Sombras</option>
                     </select>
-                    <label class="block text-stone-400">Título</label>
-                    <input type="text" oninput="updateText('scrollTitle', this.value)" placeholder="Título do Conto" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
-                    <label class="block text-stone-400">História</label>
-                    <textarea oninput="updateText('scrollText', this.value)" rows="6" class="w-full bg-stone-800 border border-stone-600 p-2 rounded"></textarea>
-                    <label class="block text-stone-400">Assinatura</label>
-                    <input type="text" oninput="updateText('scrollSignature', this.value)" placeholder="Assinatura" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
+                    <input type="text" oninput="updateText('scrollTitle', this.value)" placeholder="Título do Relato" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
+                    <textarea oninput="updateText('scrollText', this.value)" rows="6" placeholder="Escreva aqui os acontecimentos..." class="w-full bg-stone-800 border border-stone-600 p-2 rounded"></textarea>
+                    <div class="flex gap-2 items-center">
+                        <label class="text-stone-400">Carimbo:</label>
+                        <select onchange="toggleStamp(this.value)" class="flex-1 bg-stone-800 border border-stone-600 p-2 rounded">
+                            <option value="none">Nenhum</option>
+                            <option value="URGENTE">Urgente</option>
+                            <option value="CONFIDENCIAL">Confidencial</option>
+                            <option value="OFICIAL">Oficial</option>
+                        </select>
+                    </div>
+                    <input type="text" oninput="updateText('scrollSignature', this.value)" placeholder="Assinatura do Mercador" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
                 </div>
             </div>
 
             <div id="form-procurado" class="hidden">
-                <h2 class="text-2xl text-red-500 mb-6 font-pirata border-b border-stone-700 pb-2">Mural do Caçador</h2>
-                <div class="space-y-4 font-sans text-sm">
-                    <label class="block text-stone-400">Nome do Alvo</label>
-                    <input type="text" oninput="updateText('wantedName', this.value)" placeholder="Nome" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
-                    <label class="block text-stone-400">Retrato</label>
-                    <input type="file" onchange="loadImage(event)" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
-                    <label class="block text-stone-400">Recompensa</label>
-                    <input type="text" oninput="updateText('wantedReward', this.value)" value="5.000 Berrys" class="w-full bg-stone-800 border border-stone-600 p-2 rounded text-amber-500 font-bold">
-                    <label class="block text-stone-400">Condição</label>
-                    <select onchange="updateText('wantedCondition', this.value)" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
-                        <option value="VIVO OU MORTO">VIVO OU MORTO</option>
-                        <option value="APENAS VIVO">APENAS VIVO</option>
-                        <option value="APENAS MORTO">APENAS MORTO</option>
-                    </select>
+                <h3 class="text-red-500 font-pirata text-2xl mb-4 border-b border-stone-800 pb-2">Criar Recompensa</h3>
+                <div class="space-y-4 text-sm">
+                    <input type="text" oninput="updateText('wantedName', this.value)" placeholder="Nome do Procurado" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
+                    <input type="file" onchange="loadImage(event)" class="w-full bg-stone-800 border border-stone-600 p-2 rounded text-xs">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" oninput="updateText('wantedReward', this.value)" placeholder="Prêmio (Berrys)" class="bg-stone-800 border border-stone-600 p-2 rounded text-amber-500 font-bold">
+                        <select onchange="updateText('wantedCondition', this.value)" class="bg-stone-800 border border-stone-600 p-2 rounded">
+                            <option value="VIVO OU MORTO">VIVO OU MORTO</option>
+                            <option value="APENAS VIVO">APENAS VIVO</option>
+                        </select>
+                    </div>
+                    <input type="text" oninput="updateText('wantedCrime', this.value)" placeholder="Crime Principal" class="w-full bg-stone-800 border border-stone-600 p-2 rounded">
                 </div>
             </div>
 
-            <button onclick="downloadImage()" class="w-full mt-8 py-4 bg-amber-700 hover:bg-amber-600 text-white font-bold text-xl rounded shadow-lg transition-all">📜 Baixar Imagem</button>
+            <button onclick="downloadImage()" class="w-full mt-6 py-4 bg-amber-700 hover:bg-amber-600 text-white font-medieval font-bold text-xl rounded-lg shadow-xl transition-all">
+                📜 Gerar e Selar
+            </button>
         </div>
 
-        <!-- Preview -->
-        <div class="lg:col-span-7 flex justify-center items-start">
-            <div id="capture-area" class="w-full max-w-xl p-4">
+        <!-- VISUALIZAÇÃO -->
+        <div class="lg:col-span-8 flex justify-center">
+            <div id="capture-area" class="p-2 md:p-10 flex flex-col items-center w-full max-w-2xl">
                 
-                <!-- Pergaminho Visual -->
-                <div id="preview-pergaminho" class="flex flex-col items-center">
-                    <div id="scroll-top" class="h-6 bg-[#3e2723] rounded-full border-2 border-[#1b100b] w-[105%] z-20 -mb-3"></div>
-                    <div id="scroll-body" class="scroll-classic w-full relative px-10 py-16 z-10 min-h-[400px]">
-                        <h1 id="view-scrollTitle" class="text-4xl text-center mb-8 font-pirata border-b-2 border-amber-900/30 pb-4">O Conto de Bravura</h1>
-                        <div id="view-scrollText" class="font-handwriting text-2xl leading-relaxed whitespace-pre-wrap">Ouça bem, viajante...</div>
-                        <div id="view-scrollSignature" class="mt-16 text-right font-handwriting text-xl font-bold italic pt-4 border-t-2 border-amber-900/20">Ass: Os Mercadores</div>
+                <!-- PREVIEW PERGAMINHO -->
+                <div id="preview-pergaminho" class="w-full flex flex-col items-center">
+                    <!-- Rolo Superior -->
+                    <div id="wood-top" class="wood-spindle h-10 w-[106%] rounded-full z-30 -mb-5 flex justify-between px-4 items-center border-2 border-black/40">
+                        <div class="w-6 h-6 bg-[#2b1b17] rounded-full border border-yellow-900 shadow-inner"></div>
+                        <div class="w-6 h-6 bg-[#2b1b17] rounded-full border border-yellow-900 shadow-inner"></div>
                     </div>
-                    <div id="scroll-bottom" class="h-6 bg-[#3e2723] rounded-full border-2 border-[#1b100b] w-[105%] z-20 -mt-3"></div>
+                    
+                    <div id="scroll-body" class="paper-bg-real torn-edge scroll-volume w-full relative px-12 py-24 z-10 min-h-[600px] flex flex-col">
+                        <!-- Carimbo Opcional -->
+                        <div id="stamp-area" class="absolute top-20 right-10 stamp-urgent hidden">URGENTE</div>
+                        
+                        <h1 id="view-scrollTitle" class="text-4xl text-center mb-10 font-pirata border-b-2 border-amber-900/20 pb-4 text-amber-900 tracking-widest">Crónica do Reino</h1>
+                        
+                        <div id="view-scrollText" class="font-handwriting text-2xl text-amber-950 leading-relaxed whitespace-pre-wrap flex-grow italic font-semibold">
+                            Era uma vez, nas estradas poeirentas do World Anime RPG...
+                        </div>
+                        
+                        <div class="flex justify-between items-end mt-12 pt-6 border-t border-amber-900/10">
+                            <!-- Lacre de Cera Simulado -->
+                            <div class="w-16 h-16 bg-red-800 rounded-full shadow-lg flex items-center justify-center border-4 border-red-950 rotate-12">
+                                <span class="text-red-200 font-pirata text-xs">MERC</span>
+                            </div>
+                            <div id="view-scrollSignature" class="text-right font-handwriting text-xl font-bold text-amber-900">
+                                Ass: Os Mercadores
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rolo Inferior -->
+                    <div id="wood-bottom" class="wood-spindle h-10 w-[106%] rounded-full z-30 -mt-5 flex justify-between px-4 items-center border-2 border-black/40">
+                        <div class="w-6 h-6 bg-[#2b1b17] rounded-full border border-yellow-900 shadow-inner"></div>
+                        <div class="w-6 h-6 bg-[#2b1b17] rounded-full border border-yellow-900 shadow-inner"></div>
+                    </div>
                 </div>
 
-                <!-- Cartaz Visual -->
-                <div id="preview-procurado" class="hidden wood-texture p-12 flex justify-center">
-                    <div class="w-full max-w-sm paper-texture p-8 pb-12 shadow-2xl border border-amber-900/50 relative transform rotate-1">
-                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-stone-400 rounded-full border-2 border-stone-500 z-20"></div>
-                        <div class="text-center border-b-4 border-double border-amber-950 pb-2 mb-4">
-                            <h1 class="font-wanted text-5xl text-amber-950 uppercase">Procurado</h1>
-                            <p id="view-wantedCondition" class="font-medieval text-amber-900 font-bold text-sm">VIVO OU MORTO</p>
+                <!-- PREVIEW CARTAZ -->
+                <div id="preview-procurado" class="hidden bg-[#241a12] p-8 md:p-16 rounded-sm shadow-2xl relative overflow-hidden">
+                    <!-- Textura de Madeira no fundo -->
+                    <div class="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/dark-wood.png')]"></div>
+                    
+                    <div class="w-full max-w-sm paper-bg-real p-10 pb-14 shadow-2xl relative torn-edge folded-paper border border-amber-900/30">
+                        <!-- Prego -->
+                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-stone-500 rounded-full border-4 border-stone-700 z-40"></div>
+
+                        <div class="text-center border-b-8 border-double border-amber-950 pb-2 mb-8">
+                            <h1 class="font-wanted text-6xl text-amber-950 uppercase tracking-tighter">Procurado</h1>
+                            <p id="view-wantedCondition" class="font-medieval text-red-900 font-black text-lg tracking-[0.4em]">VIVO OU MORTO</p>
                         </div>
-                        <div class="w-full aspect-square border-4 border-amber-950 bg-amber-900/20 mb-4 overflow-hidden relative">
-                            <img id="view-img" src="" class="w-full h-full object-cover sepia-filter hidden">
-                            <div id="view-no-img" class="h-full flex items-center justify-center text-amber-950/40 text-6xl">👤</div>
+
+                        <!-- Foto -->
+                        <div class="w-full aspect-[4/5] bg-[#c4a47c] border-[12px] border-[#3e2723] shadow-2xl mb-8 overflow-hidden relative">
+                            <img id="view-img" src="" class="w-full h-full object-cover medieval-photo hidden">
+                            <div id="view-no-img" class="h-full flex flex-col items-center justify-center text-amber-950/20">
+                                <span class="text-9xl">👤</span>
+                            </div>
                         </div>
+
                         <div class="text-center text-amber-950 font-medieval">
-                            <h2 id="view-wantedName" class="text-3xl font-black mb-4 uppercase">Jhon Doe</h2>
-                            <p class="text-xs font-bold text-amber-900 uppercase">Recompensa</p>
-                            <p id="view-wantedReward" class="text-4xl font-wanted">5.000 Berrys</p>
+                            <h2 id="view-wantedName" class="text-4xl font-black mb-6 uppercase font-pirata border-b border-amber-950/20 inline-block px-2">Kael, o Lobo</h2>
+                            
+                            <div class="mb-6">
+                                <p class="text-[10px] font-bold text-amber-900 uppercase tracking-widest">Crime Relatado</p>
+                                <p id="view-wantedCrime" class="font-handwriting text-xl font-bold italic leading-tight px-4">Saque de caravanas reais.</p>
+                            </div>
+
+                            <div class="pt-6 border-t-4 border-double border-amber-950/40">
+                                <p class="text-[10px] font-bold text-amber-900 uppercase mb-1">Recompensa</p>
+                                <p id="view-wantedReward" class="text-5xl font-wanted tracking-widest">5.000 Berrys</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,19 +247,44 @@
             document.getElementById('preview-pergaminho').classList.toggle('hidden', tab !== 'pergaminho');
             document.getElementById('preview-procurado').classList.toggle('hidden', tab !== 'procurado');
             
-            document.getElementById('btn-pergaminho').className = tab === 'pergaminho' ? 'px-6 py-3 text-lg font-bold bg-amber-800 text-amber-100 border-2 border-amber-500 shadow-lg' : 'px-6 py-3 text-lg font-bold bg-stone-800 text-stone-400 border-2 border-stone-700';
-            document.getElementById('btn-procurado').className = tab === 'procurado' ? 'px-6 py-3 text-lg font-bold bg-red-900 text-red-100 border-2 border-red-500 shadow-lg' : 'px-6 py-3 text-lg font-bold bg-stone-800 text-stone-400 border-2 border-stone-700';
+            document.getElementById('btn-pergaminho').className = tab === 'pergaminho' ? 'px-8 py-3 text-lg font-bold bg-amber-800 text-amber-100 border-b-4 border-amber-950 shadow-lg' : 'px-8 py-3 text-lg font-bold bg-stone-800 text-stone-400 border-b-4 border-stone-900';
+            document.getElementById('btn-procurado').className = tab === 'procurado' ? 'px-8 py-3 text-lg font-bold bg-red-900 text-red-100 border-b-4 border-red-950 shadow-lg' : 'px-8 py-3 text-lg font-bold bg-stone-800 text-stone-400 border-b-4 border-stone-900';
         }
 
         function updateText(id, val) {
-            document.getElementById('view-' + id).innerText = val;
+            const el = document.getElementById('view-' + id);
+            if(el) el.innerText = val || "...";
+        }
+
+        function toggleStamp(val) {
+            const el = document.getElementById('stamp-area');
+            if(val === 'none') {
+                el.classList.add('hidden');
+            } else {
+                el.classList.remove('hidden');
+                el.innerText = val;
+            }
         }
 
         function updateScrollStyle(style) {
             const body = document.getElementById('scroll-body');
-            body.className = `w-full relative px-10 py-16 z-10 min-h-[400px] scroll-${style}`;
-            document.getElementById('scroll-top').style.display = style === 'classic' ? 'block' : 'none';
-            document.getElementById('scroll-bottom').style.display = style === 'classic' ? 'block' : 'none';
+            const top = document.getElementById('wood-top');
+            const bottom = document.getElementById('wood-bottom');
+            
+            if(style === 'classic') {
+                body.style.backgroundColor = '#e8d5b5';
+                top.classList.remove('hidden');
+                bottom.classList.remove('hidden');
+            } else if(style === 'noble') {
+                body.style.backgroundColor = '#f8fafc';
+                top.classList.add('hidden');
+                bottom.classList.add('hidden');
+            } else {
+                body.style.backgroundColor = '#262626';
+                body.style.color = '#d4d4d4';
+                top.classList.add('hidden');
+                bottom.classList.add('hidden');
+            }
         }
 
         function loadImage(event) {
@@ -171,17 +295,18 @@
                 img.classList.remove('hidden');
                 document.getElementById('view-no-img').classList.add('hidden');
             }
-            reader.readAsDataURL(event.target.files[0]);
+            if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
         }
 
         async function downloadImage() {
             const area = document.getElementById('capture-area');
             const canvas = await html2canvas(area, {
-                backgroundColor: currentTab === 'procurado' ? '#2c1e16' : null,
-                scale: 2
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true
             });
             const link = document.createElement('a');
-            link.download = currentTab + '_mercadores.jpg';
+            link.download = `WAR_${currentTab}_${Date.now()}.jpg`;
             link.href = canvas.toDataURL('image/jpeg', 0.9);
             link.click();
         }
